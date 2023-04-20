@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\MejaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\MenuController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,3 +19,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Meja
+Route::get('/getmeja',[MejaController::class,'getmeja']);
+Route::get('/getmeja/{id}',[MejaController::class,'selectmeja']);
+
+Route::post('/createmeja',[MejaController::class,'createmeja']);
+Route::put('/updatemeja/{id}',[MejaController::class,'updatemeja']);    
+Route::delete('/deletemeja/{id}',[MejaController::class,'deletemeja']);
