@@ -13,25 +13,23 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id('id_user');
+        Schema::create('menus', function (Blueprint $table) {
+            $table->id('id_menu');
             $table->string('nama');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->enum('role',['kasir','manager','admin']);
-            $table->rememberToken();
+            $table->enum('jenis',['makanan','minuman']);
+            $table->integer('harga');
+            $table->integer('jumlah_pesan')->nullable();
             $table->timestamps();
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Reverse the migrations.  
      *
      * @return void
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('menus');
     }
 };
