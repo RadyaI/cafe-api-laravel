@@ -27,3 +27,10 @@ Route::get('/getmeja/{id}',[MejaController::class,'selectmeja']);
 Route::post('/createmeja',[MejaController::class,'createmeja']);
 Route::put('/updatemeja/{id}',[MejaController::class,'updatemeja']);    
 Route::delete('/deletemeja/{id}',[MejaController::class,'deletemeja']);
+
+// MENU
+Route::get('/getmenu',[MenuController::class,'getmenu']);
+Route::get('/getmenu/{id}',[MenuController::class,'selectmenu']);
+Route::post('/createmenu',[MenuController::class,'createmenu']);
+Route::put('/updatemenu/{id}',[MenuController::class,'updatemenu']);
+Route::delete('/deletemenu/{id}',[MenuController::class,'deletemenu']); 
