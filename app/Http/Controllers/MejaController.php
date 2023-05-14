@@ -16,6 +16,12 @@ class MejaController extends Controller
         return response()->json($getmeja);
     }
 
+    public function mejatersedia()
+    {
+        $meja = Meja::where('status', '!=' ,'digunakan')->get();
+            return response()->json($meja);
+    }   
+
     public function selectmeja($id)
     {
         $getmeja = Meja::where('id_meja', $id)->get();

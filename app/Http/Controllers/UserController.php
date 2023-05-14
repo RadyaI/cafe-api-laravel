@@ -15,6 +15,12 @@ class UserController extends Controller
         return response()->json($get_user);
     }
 
+    public function getkasir()
+    {
+        $kasir = User::where('role','kasir')->get();
+            return response()->json($kasir);
+    }
+
     public function selectuser($id)
     {
         $getuser = User::where('id_user', $id)->get();
