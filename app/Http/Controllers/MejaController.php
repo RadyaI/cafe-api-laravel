@@ -29,7 +29,7 @@ class MejaController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors()->toJson());
+            return response()->json($validator->errors()->toJson(), 422);
         }
 
         $createmeja = Meja::create([
@@ -45,7 +45,7 @@ class MejaController extends Controller
     public function updatemeja(Request $req, $id)
     {
         $validator = Validator::make($req->all(), [
-            'nomor_meja' => 'required|unique:mejas',
+            'nomor_meja' => 'required',
             // 'status' => 'required'
         ]);
 
@@ -55,7 +55,7 @@ class MejaController extends Controller
 
         $update = Meja::where('id_meja', $id)->update([
             'nomor_meja' => $req->input('nomor_meja'),
-            // 'status' => $req->input('status')
+            'status' => $req->input('status')
         ]);
 
         if ($update) {

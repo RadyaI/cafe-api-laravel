@@ -1,29 +1,77 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use JWTAuth;
-use Tymon\JWTAuth\Exceptions\JWTException;
 
 class UserController extends Controller
 {
-    public function login(Request $request)
+    public function getuser()
     {
-        $credentials = $request->only('email', 'password');
-        try {
-            if (!$token = JWTAuth::attempt($credentials)) {
-                return response()->json(['error' => 'Password Salah'], 400);
-            }
-        } catch (JWTException $e) {
-            return response()->json(['error' => 'could_not_create_token', 500]);
+        $get_user = User::get();
+        return response()->json($get_user);
+    }
+
+    public function selectuser($id)
+    {
+        $getuser = User::where('id_user', $id)->get();
+        return response()->json($getuser);
+    }
+
+    public function createuser(Request $req)
+    {
+        $validator = Validator::make($req->all(), [
+            'nama' => 'required',
+            'email' => 'required|unique:users',
+            'password' => 'required',
+            'role' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->tojson(), 422);
         }
 
-        $user = JWTAuth::User();
-        $level = $user -> level();
+        $create = User::create([
+            'nama' => $req->input('nama'),
+            'email' => $req->input('email'),
+            'gender' => $req->input('gender'),
+            'password' => Hash::make($req->input('password')),
+            'role' => $req->input('role'),
+        ]);
 
-        return response()->json(compact('token', 'level'));
+        return response()->json([
+            'Status' => 'Success'
+        ]);
+    }
+
+    public function updateuser(Request $req, $id)
+    {
+        // $validator = Validator::make($req->all(), [
+
+        // ]);
+        $update = User::where('id_user', $id)->update([
+            'nama' => $req->input('nama'),
+            'email' => $req->input('email'),
+            'password' => Hash::make($req->input('password')),
+            'role' => $req->input('role'),
+            'gender' => $req->input('gender'),
+        ]);
+
+        if ($update) {
+            return response()->json('Berhasil');
+        } else {
+            return response()->json('gagal');
+        }
+    }
+
+    public function deleteuser($id)
+    {
+        $delete = User::where('id_user', $id)->delete();
+        return response()->json([
+            'Pesan' => 'Berhasil'
+        ]);
     }
 }
