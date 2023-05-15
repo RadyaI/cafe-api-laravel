@@ -51,6 +51,9 @@ Route::post('/updatephoto/{id}',[MenuController::class,'updatephoto']);
 Route::delete('/deletemenu/{id}',[MenuController::class,'deletemenu']); 
 
 // TRANSAKSI
+Route::get('/gethistory',[TransaksiController::class,'gethistory']);
+Route::get('/gethistory/{code}',[TransaksiController::class,'selecthistory']);
+
 Route::get('/gettransaksi',[TransaksiController::class,'gettransaksi']);
 Route::get('/get_ongoing_transaksi/{id}',[TransaksiController::class,'getongoingtransaksi']);
 Route::get('/gettotalharga/{id}',[TransaksiController::class,'totalharga']);

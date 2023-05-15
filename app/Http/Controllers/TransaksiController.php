@@ -18,6 +18,22 @@ class TransaksiController extends Controller
         return response()->json($gettransaksi);
     }
 
+    public function gethistory()
+    {
+        $get = DB::table('history')->get();
+            return response()->json($get);
+    }
+
+    public function selecthistory($code)
+    {
+        $get = DB::table('transaksis')
+        ->where('id_pelayanan',$code)
+        ->join('users','transaksis.id_user','=','users.id_user')
+        ->join('menus','transaksis.id_menu','=','menus.id_menu')
+        ->get();
+            return response()->json($get);
+    }
+
     public function ongoing()
     {
         $get = Meja::where('status', 'digunakan')->get();
@@ -26,7 +42,10 @@ class TransaksiController extends Controller
 
     public function getongoingtransaksi($id)
     {
-        $gettransaksi = Transaksi::where('id_meja', $id)->where('status', 'belum_lunas')->first();
+        $gettransaksi = Transaksi::
+        where('id_meja', $id)
+        ->where('status', 'belum_lunas')
+            ->first();
         return response()->json($gettransaksi);
     }
 
@@ -83,6 +102,13 @@ class TransaksiController extends Controller
             'id_user' => $req->input('id_user'),
             'id_meja' => $req->input('id_meja'),
             'nama_pelanggan' => $req->input('nama_pelanggan')
+        ]);
+
+        $history = DB::table('history')->insert([
+            'id_pelayanan' => $id_pelayanan,
+            'tgl_transaksi' => Carbon::now(),
+            'id_user' => $req->input('id_user'),
+            'nama_pelanggan'=> $req->input('nama_pelanggan')
         ]);
 
         $updatemeja = Meja::where('id_meja', $req->input('id_meja'))->update([
