@@ -57,9 +57,13 @@ Route::get('/gethistory/{code}',[TransaksiController::class,'selecthistory']);
 Route::get('/gettransaksi',[TransaksiController::class,'gettransaksi']);
 Route::get('/get_ongoing_transaksi/{id}',[TransaksiController::class,'getongoingtransaksi']);
 Route::get('/gettotalharga/{id}',[TransaksiController::class,'totalharga']);
+Route::get('/gettotal/{code}',[TransaksiController::class,'total']);
 Route::get('/getcart',[TransaksiController::class,'getcart']);
 Route::get('/getongoing',[TransaksiController::class,'ongoing']);
 Route::put('/checkout',[TransaksiController::class,'checkout']);
 Route::put('/done_transaksi/{id}',[TransaksiController::class,'donetransaksi']);
 Route::get('/gettransaksi/{id}',[TransaksiController::class,'selecttransaksi']);
 Route::post('/tambahpesanan',[TransaksiController::class,'tambahpesanan']);
+
+Route::get('/getday/{date}',[TransaksiController::class,'getdate']);
+Route::get('/getmonth/{month}',[TransaksiController::class,'getmonth']);

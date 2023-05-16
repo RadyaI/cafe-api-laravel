@@ -12,6 +12,18 @@ use Illuminate\Support\Facades\DB;
 
 class TransaksiController extends Controller
 {
+    public function getdate($date)
+    {
+        $get = Transaksi::where('tanggal_pesan', $date)->sum('total_harga');
+        return response()->json($get);
+    }
+
+    public function getmonth($month)
+    {
+        $get = Transaksi::whereMonth('tanggal_pesan', substr($month, 5, 2))->sum('total_harga');
+        return response()->json($get);
+    }
+
     public function gettransaksi()
     {
         $gettransaksi = Transaksi::get();
@@ -20,18 +32,20 @@ class TransaksiController extends Controller
 
     public function gethistory()
     {
-        $get = DB::table('history')->get();
-            return response()->json($get);
+        $get = DB::table('history')
+            ->join('users', 'history.id_user', '=', 'users.id_user')
+            ->orderBy('id_history', 'desc')->get();
+        return response()->json($get);
     }
 
     public function selecthistory($code)
     {
         $get = DB::table('transaksis')
-        ->where('id_pelayanan',$code)
-        ->join('users','transaksis.id_user','=','users.id_user')
-        ->join('menus','transaksis.id_menu','=','menus.id_menu')
-        ->get();
-            return response()->json($get);
+            ->where('id_pelayanan', $code)
+            ->join('users', 'transaksis.id_user', '=', 'users.id_user')
+            ->join('menus', 'transaksis.id_menu', '=', 'menus.id_menu')
+            ->get();
+        return response()->json($get);
     }
 
     public function ongoing()
@@ -42,11 +56,16 @@ class TransaksiController extends Controller
 
     public function getongoingtransaksi($id)
     {
-        $gettransaksi = Transaksi::
-        where('id_meja', $id)
-        ->where('status', 'belum_lunas')
+        $gettransaksi = Transaksi::where('id_meja', $id)
+            ->where('status', 'belum_lunas')
             ->first();
         return response()->json($gettransaksi);
+    }
+
+    public function total($code)
+    {
+        $get = Transaksi::where('id_pelayanan', $code)->sum('total_harga');
+        return response()->json($get);
     }
 
     public function totalharga($id)
@@ -108,14 +127,14 @@ class TransaksiController extends Controller
             'id_pelayanan' => $id_pelayanan,
             'tgl_transaksi' => Carbon::now(),
             'id_user' => $req->input('id_user'),
-            'nama_pelanggan'=> $req->input('nama_pelanggan')
+            'nama_pelanggan' => $req->input('nama_pelanggan')
         ]);
 
         $updatemeja = Meja::where('id_meja', $req->input('id_meja'))->update([
             'status' => 'digunakan'
         ]);
 
-        if ($checkout && $updatemeja) {
+        if ($checkout && $updatemeja && $history) {
             return response()->json('Berhasil');
         } else {
             return response()->json('Gagal');
