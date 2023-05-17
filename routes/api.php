@@ -3,11 +3,10 @@
 use App\Http\Controllers\MejaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
-use App\Models\Transaksi;
+// use App\Models\Transaksi;
 
 /*
 |--------------------------------------------------------------------------

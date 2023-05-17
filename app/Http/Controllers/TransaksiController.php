@@ -105,6 +105,14 @@ class TransaksiController extends Controller
             'status' => 'belum_lunas'
         ]);
 
+        $get = DB::table('menus')->where('id_menu', $req->input('id_menu'))->select('jumlah_pesan')->get();
+        $jumlah_pesan = $get->isEmpty() ? 0 : $get[0]->jumlah_pesan;
+        $addjumlahpesan = $jumlah_pesan + $total_pesanan;
+
+        $add = DB::table('menus')->where('id_menu', $req->input('id_menu'))->update([
+            'jumlah_pesan' => $addjumlahpesan
+        ]);
+
         if ($tambah) {
             return response()->json('Berhasil');
         } else {
