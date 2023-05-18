@@ -55,7 +55,7 @@ class TransaksiController extends Controller
     }
 
     public function getongoingtransaksi($id)
-    {
+    {   
         $gettransaksi = Transaksi::where('id_meja', $id)
             ->where('status', 'belum_lunas')
             ->first();
