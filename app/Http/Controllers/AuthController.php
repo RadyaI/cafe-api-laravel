@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -15,7 +16,10 @@ class AuthController extends Controller
     {
         $token = Str::random(10);
 
-        $role = User::select('role')->where('email',$request->input('email'))->first();
+        $role = User::select('role')
+            ->where('email', $request->input('email'))
+            ->where('password', Hash::make($request->input('password')))
+            ->first();
 
 
         return response()->json(compact('token', 'role'));
