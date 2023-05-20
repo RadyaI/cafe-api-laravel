@@ -16,16 +16,14 @@ class AuthController extends Controller
     {
         $token = Str::random(10);
 
-        $role = User::select('role')
-            ->where('email', $request->input('email'))
-            ->where('password', Hash::make($request->input('password')))
-            ->first();
+        $user = User::where('email', $request->input('email'))->first();
 
-            if($role){
-                return response()->json('OK anggep dah login');
-            } else {
-                return response()->json('LOl password salah');
-            }
+        if (!$user || !Hash::check($request->input('password'), $user->password)) {
+            return response()->json(['message' => 'Password mu salah oi'], 401);
+        }
+
+
+        $role = $user->role;
 
         return response()->json(compact('token', 'role'));
     }
