@@ -21,6 +21,9 @@ class AuthController extends Controller
             ->where('password', Hash::make($request->input('password')))
             ->first();
 
+            if(!$role){
+                return response()->json('Password salah lol');
+            }
 
         return response()->json(compact('token', 'role'));
     }
